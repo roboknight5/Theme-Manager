@@ -5,6 +5,5 @@ Currently supports
 - Icon Themes
 - Shell Themes (For gnome only after installing user-themes extension)
 - Cursor Themes
-- 
-https://user-images.githubusercontent.com/51866438/110924165-6453a300-832a-11eb-9b8f-94c22c35c5ee.mp4
+![vid1test1-2021-03-12_11 58 49](https://user-images.githubusercontent.com/51866438/110924454-b85e8780-832a-11eb-910e-fcbdc3f5033a.gif)
 
