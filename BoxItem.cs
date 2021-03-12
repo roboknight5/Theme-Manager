@@ -9,10 +9,9 @@ namespace Gtk_Theme_Manager
 
         public BoxItem(string itemName,RadioButton radioButtonGroup)
         {
-            itemName=itemName.Replace("_", "__");
             this.itemName = itemName;
             HeightRequest = 50;
-            Label label=new Label(itemName);
+            Label label=new Label(itemName.Replace("_", "__"));
             radioButton=new RadioButton(radioButtonGroup,"");
 
             PackStart(label,false,false,5);
