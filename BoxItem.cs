@@ -7,20 +7,19 @@ namespace Gtk_Theme_Manager
         public string itemName { get; set; }
         public RadioButton radioButton;
 
-        public BoxItem(string itemName,RadioButton radioButtonGroup)
+        public BoxItem(string itemName, RadioButton radioButtonGroup)
         {
             this.itemName = itemName;
             HeightRequest = 50;
-            Label label=new Label(itemName.Replace("_", "__"));
-            radioButton=new RadioButton(radioButtonGroup,"");
 
-            PackStart(label,false,false,5);
-            PackEnd(radioButton,false,false,5);
+            Label label = new Label(itemName.Replace("_", "__"));
+            radioButton = new RadioButton(radioButtonGroup, "");
+
+            PackStart(label, false, false, 5);
+            PackEnd(radioButton, false, false, 5);
         }
 
         public override string ToString()
-        {
-            return itemName;
-        }
+            => itemName;
     }
 }
