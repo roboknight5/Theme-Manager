@@ -63,7 +63,11 @@ namespace Gtk_Theme_Manager
                 }; 
 
 
-                eventBox.ButtonPressEvent += (o, eventArgs) => layoutHandler.ApplyLayout(layoutItem);
+                eventBox.ButtonPressEvent += (o, eventArgs) =>
+                {
+                    layoutHandler.ApplyLayout(layoutItem);
+                    box.UnselectAll();
+                };
                 
                 
             }
@@ -89,7 +93,11 @@ namespace Gtk_Theme_Manager
                         
                     }; 
 
-                    eventBox.ButtonPressEvent += (o, eventArgs) => layoutHandler.ApplyLayout(layoutItem);
+                    eventBox.ButtonPressEvent += (o, eventArgs) =>
+                    {
+                        layoutHandler.ApplyLayout(layoutItem);
+                        box.UnselectAll();
+                    };
                    
                     // vBox.PackStart(eventBox, false, false, 5);
                 }

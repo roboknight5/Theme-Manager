@@ -76,7 +76,7 @@ namespace ThemeManager
                 {
                     ListBoxRow row = new ListBoxRow();
                     EventBox eventBox = new EventBox();
-                    BoxItem boxItem = new BoxItem(theme, radioButton);
+                    BoxItem boxItem = new BoxItem(theme, radioButton,currentMode);
                     BoxItems.Add(boxItem);
 
                     row.Child = boxItem;
@@ -119,6 +119,7 @@ namespace ThemeManager
                             case ThemeMode.CursorTheme:
                                 bashHandler.ChangeCursor(boxItem.ItemName);
                                 break;
+                            
                         }
                     };
                     Box.Add(eventBox);
@@ -129,12 +130,12 @@ namespace ThemeManager
             }
         }
 
-        public static void ResetSelection(string name)
+        public static void ResetSelection(string name,ThemeMode type)
         {
             Box.UnselectAll();
             foreach (var boxItem in BoxItems)
             {
-                if (boxItem.ItemName==name)
+                if (boxItem.ItemName==name&&boxItem.ItemType==type)
                 {
                     boxItem.RadioButton.Active = true;
                     break;

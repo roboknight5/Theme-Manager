@@ -44,10 +44,10 @@ namespace Gtk_Theme_Manager
             BashHandler.ChangeIcon(layoutItem.IconTheme);
             BashHandler.ChangeCursor(layoutItem.CursorTheme);
             BashHandler.ChangeShell(layoutItem.ShellTheme);
-            ThemeUI.ResetSelection(layoutItem.Theme);
-            ThemeUI.ResetSelection(layoutItem.IconTheme);
-            ThemeUI.ResetSelection(layoutItem.CursorTheme);
-            ThemeUI.ResetSelection(layoutItem.ShellTheme);
+            ThemeUI.ResetSelection(layoutItem.Theme,ThemeMode.GtkTheme);
+            ThemeUI.ResetSelection(layoutItem.IconTheme,ThemeMode.IconTheme);
+            ThemeUI.ResetSelection(layoutItem.CursorTheme,ThemeMode.CursorTheme);
+            ThemeUI.ResetSelection(layoutItem.ShellTheme,ThemeMode.ShellTheme);
 
         }
         public LayoutItem AddLayoutItem()
