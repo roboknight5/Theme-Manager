@@ -11,7 +11,7 @@ using Stack = Gtk.Stack;
 using Switch = Gtk.Switch;
 using Window = Gtk.Window;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     class Program : Window
     {

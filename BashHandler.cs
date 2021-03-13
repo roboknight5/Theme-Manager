@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Gtk;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     public class BashHandler
     {

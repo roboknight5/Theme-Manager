@@ -2,24 +2,24 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     public class ThemeUI : ScrolledWindow
     {
-        public ThemeMode currentMode;
+        public ThemeMode CurrentMode;
         private List<String> currentArray;
         private String currentTheme;
 
         public ThemeUI(ThemeMode currentMode)
             => Initalize(currentMode);
 
-        public void Reload() => Initalize(currentMode);
+        public void Reload() => Initalize(CurrentMode);
 
         private void Initalize(ThemeMode currentMode)
         {
             foreach (var widget in Children)
                 Remove(widget);
-            this.currentMode = currentMode;
+            this.CurrentMode = currentMode;
             BashHandler bashHandler = BashHandler.Instance;
 
 #if DEBUG
@@ -77,13 +77,13 @@ namespace Gtk_Theme_Manager
                     row.Child = boxItem;
                     eventBox.Add(row);
 
-                    if (currentTheme == boxItem.itemName)
+                    if (currentTheme == boxItem.ItemName)
                     {
                         box.UnselectAll();
                         box.SelectionMode = SelectionMode.Single;
-                        boxItem.radioButton.Active = true;
+                        boxItem.RadioButton.Active = true;
 #if DEBUG
-                        Console.WriteLine(boxItem.itemName);
+                        Console.WriteLine(boxItem.ItemName);
 #endif
                     }
 
@@ -92,26 +92,26 @@ namespace Gtk_Theme_Manager
                         box.UnselectAll();
 
 #if DEBUG
-                        Console.WriteLine(boxItem.itemName);
+                        Console.WriteLine(boxItem.ItemName);
 #endif
 
-                        boxItem.radioButton.Active = true;
+                        boxItem.RadioButton.Active = true;
                         switch (currentMode)
                         {
                             case ThemeMode.GtkTheme:
-                                bashHandler.ChangeTheme(boxItem.itemName);
+                                bashHandler.ChangeTheme(boxItem.ItemName);
                                 break;
 
                             case ThemeMode.IconTheme:
-                                bashHandler.ChangeIcon(boxItem.itemName);
+                                bashHandler.ChangeIcon(boxItem.ItemName);
                                 break;
 
                             case ThemeMode.ShellTheme:
-                                bashHandler.ChangeShell(boxItem.itemName);
+                                bashHandler.ChangeShell(boxItem.ItemName);
                                 break;
 
                             case ThemeMode.CursorTheme:
-                                bashHandler.ChangeCursor(boxItem.itemName);
+                                bashHandler.ChangeCursor(boxItem.ItemName);
                                 break;
                         }
                     };
