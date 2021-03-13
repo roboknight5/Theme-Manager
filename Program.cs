@@ -17,55 +17,46 @@ namespace Gtk_Theme_Manager
     {
         public Program(string title) : base(title)
         {
-            
-            SetDefaultSize(500,500);
-            BashHandler bashHandler=BashHandler.Instance;
+            SetDefaultSize(500, 500);
+            BashHandler bashHandler = BashHandler.Instance;
 
+            try { SetIconFromFile("/usr/share/icons/Gtk-Theme-Manager-icon.png"); }
+            catch (Exception e) { Console.WriteLine(e); }
 
-            try
-            {
-                SetIconFromFile("/usr/share/icons/Gtk-Theme-Manager-icon.png");
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
             // Box box = new Box(Orientation.Vertical,6);
             DeleteEvent += delegate { Gtk.Application.Quit(); };
+
             HeaderBar headerBar = new HeaderBar();
             headerBar.Title = title;
             headerBar.ShowCloseButton = true;
             headerBar.Visible = true;
+
             Button menuButton = new Button();
             menuButton.Image = Gtk.Image.NewFromIconName("view-refresh-symbolic", IconSize.LargeToolbar);
             menuButton.Visible = true;
-            Image image=new Image();
+
+            Image image = new Image();
             image.File = "/usr/share/icons/Gtk-Theme-Manager-icon.png";
-            image.Visible = true;    
-            
-            
-            
+            image.Visible = true;
 
             headerBar.PackStart(image);
             headerBar.PackEnd(menuButton);
             Titlebar = headerBar;
 
-
-            
-    
-            StackSidebar stackSidebar=new StackSidebar();
-            HBox hBox=new HBox();
-            hBox.PackStart(stackSidebar,false,true,0);
+            StackSidebar stackSidebar = new StackSidebar();
+            HBox hBox = new HBox();
+            hBox.PackStart(stackSidebar, false, true, 0);
             stackSidebar.WidthRequest = 120;
-            Stack stack=new Stack();
+
+            Stack stack = new Stack();
             stackSidebar.Stack = stack;
             stack.TransitionType = StackTransitionType.SlideUpDown;
-            stack.TransitionDuration=(1000);
-            ThemeUi GtkTheme=new ThemeUi(ThemeMode.GtkTheme);
-            ThemeUi IconTheme=new ThemeUi(ThemeMode.IconTheme);
-            ThemeUi ShellTheme=new ThemeUi(ThemeMode.ShellTheme);
-            ThemeUi CursorTheme=new ThemeUi(ThemeMode.CursorTheme);
+            stack.TransitionDuration = (1000);
+
+            ThemeUi GtkTheme = new ThemeUi(ThemeMode.GtkTheme);
+            ThemeUi IconTheme = new ThemeUi(ThemeMode.IconTheme);
+            ThemeUi ShellTheme = new ThemeUi(ThemeMode.ShellTheme);
+            ThemeUi CursorTheme = new ThemeUi(ThemeMode.CursorTheme);
             stack.RedrawOnAllocate = true;
 
             menuButton.Clicked += (sender, args) =>
@@ -75,20 +66,21 @@ namespace Gtk_Theme_Manager
                 IconTheme.Reload();
                 CursorTheme.Reload();
                 ShellTheme.Reload();
+            };
 
-
-            }; 
-            
-            stack.AddTitled(GtkTheme,"Themes","Themes" );
-            stack.AddTitled(IconTheme,"IconTheme","Icons" );
-            stack.AddTitled(ShellTheme,"ShellTheme","Shells" );
-            stack.AddTitled(CursorTheme,"CursorTheme","Cursors" );
+            stack.AddTitled(GtkTheme, "Themes", "Themes");
+            stack.AddTitled(IconTheme, "IconTheme", "Icons");
+            stack.AddTitled(ShellTheme, "ShellTheme", "Shells");
+            stack.AddTitled(CursorTheme, "CursorTheme", "Cursors");
 
             stack.ShowAll();
-            hBox.PackStart(new Separator(Orientation.Vertical),false,false,0 );
-            
-            hBox.PackStart(stack,true,true,0);
-            
+            hBox.PackStart(new Separator(Orientation.Vertical), false, false, 0);
+            hBox.PackStart(stack, true, true, 0);
+
+            hBox.ShowAll();
+            Add(hBox);
+            Show();
+
             // Add(box);
             // ListBox listBox=new ListBox();
             // ListBoxRow themeRow=new ListBoxRow();
@@ -107,18 +99,11 @@ namespace Gtk_Theme_Manager
             // listBox.Add(shellRow);
             // listBox.ShowAll();
             // Add(listBox);
-            
+
             // HBox hBox=new HBox();
             // hBox.Add(new ThemeUi(ThemeMode.GtkTheme));
             // hBox.Add(new ThemeUi(ThemeMode.IconTheme));
             // hBox.Add(new ThemeUi(ThemeMode.ShellTheme));
-            hBox.ShowAll();
-            //
-            // Add(hBox);
-            Add(hBox);
-            Show();
-            
-           
 
             // ListBox  listBox= new ListBox();
             // listBox.Hexpand = true;
@@ -305,11 +290,8 @@ namespace Gtk_Theme_Manager
             // ShowAll();
         }
 
-       
-
         static void Main(string[] args)
         {
-            
             Gtk.Application.Init();
             new Program("Theme Manager");
             Gtk.Application.Run();
