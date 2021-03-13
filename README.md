@@ -1,5 +1,5 @@
 # Theme-Manager
-# A Theme Manager To Manage Gtk Themes As well as icons/gnome-shell/cursor themes
+# A Theme Manager To Manage Gtk Themes As well as icons/gnome-shell/cursor themes Only on gnome currently
 Currently supports 
 - Gtk Themes
 - Icon Themes
