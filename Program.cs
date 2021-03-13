@@ -53,10 +53,10 @@ namespace Gtk_Theme_Manager
             stack.TransitionType = StackTransitionType.SlideUpDown;
             stack.TransitionDuration = (1000);
 
-            ThemeUi GtkTheme = new ThemeUi(ThemeMode.GtkTheme);
-            ThemeUi IconTheme = new ThemeUi(ThemeMode.IconTheme);
-            ThemeUi ShellTheme = new ThemeUi(ThemeMode.ShellTheme);
-            ThemeUi CursorTheme = new ThemeUi(ThemeMode.CursorTheme);
+            ThemeUI GtkTheme = new ThemeUI(ThemeMode.GtkTheme);
+            ThemeUI IconTheme = new ThemeUI(ThemeMode.IconTheme);
+            ThemeUI ShellTheme = new ThemeUI(ThemeMode.ShellTheme);
+            ThemeUI CursorTheme = new ThemeUI(ThemeMode.CursorTheme);
             stack.RedrawOnAllocate = true;
 
             menuButton.Clicked += (sender, args) =>

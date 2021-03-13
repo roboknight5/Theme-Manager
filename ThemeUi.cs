@@ -4,13 +4,13 @@ using Gtk;
 
 namespace Gtk_Theme_Manager
 {
-    public class ThemeUi : ScrolledWindow
+    public class ThemeUI : ScrolledWindow
     {
         public ThemeMode currentMode;
         private List<String> currentArray;
         private String currentTheme;
 
-        public ThemeUi(ThemeMode currentMode)
+        public ThemeUI(ThemeMode currentMode)
             => Initalize(currentMode);
 
         public void Reload() => Initalize(currentMode);
