@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     public class ThemeUI : ScrolledWindow
     {
