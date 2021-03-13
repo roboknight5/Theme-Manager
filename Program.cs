@@ -6,6 +6,7 @@ using System.Linq;
 using Gdk;
 using GLib;
 using Gtk;
+using Gtk_Theme_Manager;
 using Process = System.Diagnostics.Process;
 using Stack = Gtk.Stack;
 using Switch = Gtk.Switch;
@@ -57,6 +58,7 @@ namespace ThemeManager
             ThemeUI IconTheme = new ThemeUI(ThemeMode.IconTheme);
             ThemeUI ShellTheme = new ThemeUI(ThemeMode.ShellTheme);
             ThemeUI CursorTheme = new ThemeUI(ThemeMode.CursorTheme);
+            LayoutUI layoutUi = new LayoutUI();
             stack.RedrawOnAllocate = true;
 
             menuButton.Clicked += (sender, args) =>
@@ -72,6 +74,7 @@ namespace ThemeManager
             stack.AddTitled(IconTheme, "IconTheme", "Icons");
             stack.AddTitled(ShellTheme, "ShellTheme", "Shells");
             stack.AddTitled(CursorTheme, "CursorTheme", "Cursors");
+            stack.AddTitled(layoutUi,"LayoutUI","Layouts");
 
             stack.ShowAll();
             hBox.PackStart(new Separator(Orientation.Vertical), false, false, 0);
