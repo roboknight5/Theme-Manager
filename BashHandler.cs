@@ -25,7 +25,7 @@ namespace ThemeManager
         {
             Initalize();
 #if DEBUG
-            CursorList.ForEach(s => Console.WriteLine(s)); // Would run
+            // CursorList.ForEach(s => Console.WriteLine(s)); // Would run
 #endif
         }
 
@@ -192,13 +192,13 @@ namespace ThemeManager
             // cmd = cmd.Replace("\"", "\\\"");
             // Do not forget to change arguments from
             // `escapedArgs` to `cmd` if you plan to do so.
-            var escapedArgs = cmd.Replace("\"", "\\\"");
+            cmd = cmd.Replace("\"", "\\\"");
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "/bin/bash",
-                    Arguments = $"-c \"{escapedArgs}\"", // Look at the note above.
+                    Arguments = $"-c \"{cmd}\"", // Look at the note above.
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,

@@ -68,6 +68,7 @@ namespace ThemeManager
                 IconTheme.Reload();
                 CursorTheme.Reload();
                 ShellTheme.Reload();
+                layoutUi.Reload();
             };
 
             stack.AddTitled(GtkTheme, "Themes", "Themes");
