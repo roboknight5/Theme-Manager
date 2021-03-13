@@ -1,4 +1,4 @@
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     public enum ThemeMode
     {

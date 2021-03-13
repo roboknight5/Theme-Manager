@@ -1,25 +1,25 @@
 using Gtk;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager
 {
     public class BoxItem : HBox
     {
-        public string itemName { get; set; }
-        public RadioButton radioButton;
+        public string ItemName { get; set; }
+        public RadioButton RadioButton;
 
         public BoxItem(string itemName, RadioButton radioButtonGroup)
         {
-            this.itemName = itemName;
+            this.ItemName = itemName;
             HeightRequest = 50;
 
             Label label = new Label(itemName.Replace("_", "__"));
-            radioButton = new RadioButton(radioButtonGroup, "");
+            RadioButton = new RadioButton(radioButtonGroup, "");
 
             PackStart(label, false, false, 5);
-            PackEnd(radioButton, false, false, 5);
+            PackEnd(RadioButton, false, false, 5);
         }
 
         public override string ToString()
-            => itemName;
+            => ItemName;
     }
 }
