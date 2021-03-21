@@ -58,7 +58,9 @@ namespace Gtk_Theme_Manager
                 BashHandler.GetCursorTheme(),
                 BashHandler.GetShellTheme());
             
-            Console.WriteLine(LayoutItems.Count);
+           
+            /* Old Check will removed later
+              Console.WriteLine(LayoutItems.Count);
             if (LayoutItems.Count==0)
             {
                 LayoutItems.Add(layoutItem);
@@ -73,8 +75,9 @@ namespace Gtk_Theme_Manager
                 
                 Console.WriteLine(layoutItem);
                 return layoutItem;
-
+            
             }
+            */
             
             int index = Directory.GetFiles(PathToSettings).Length;
             int count=0;

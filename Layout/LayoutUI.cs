@@ -36,6 +36,7 @@ namespace Gtk_Theme_Manager
             LayoutHandler layoutHandler = new LayoutHandler();
             
             ListBox box = new ListBox();
+            box.SelectionMode = SelectionMode.None;
 
             
             Button button = new Button();

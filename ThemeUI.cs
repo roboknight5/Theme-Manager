@@ -21,6 +21,7 @@ namespace ThemeManager
 
         private void Initalize(ThemeMode currentMode)
         {
+           
             foreach (var widget in Children)
                 Remove(widget);
             this.CurrentMode = currentMode;
@@ -67,10 +68,12 @@ namespace ThemeManager
                         break;
                 }
 
-                 Box = new ListBox();
+                 
 
                 RadioButton radioButton = new RadioButton("");
+                Box = new ListBox();
                 Box.SelectionMode = SelectionMode.None;
+                // Box.SelectionMode = SelectionMode.None;
 
                 foreach (var theme in currentArray)
                 {
@@ -86,13 +89,43 @@ namespace ThemeManager
                     if (currentTheme == boxItem.ItemName)
                     {
                         Box.UnselectAll();
-                        Box.SelectionMode = SelectionMode.Single;
+                        // Box.SelectionMode = SelectionMode.Single;
                         boxItem.RadioButton.Active = true;
 #if DEBUG
                         // Console.WriteLine(boxItem.ItemName);
 #endif
                     }
 
+                    boxItem.RadioButton.Clicked += (sender, args) =>
+                    {
+                        Box.UnselectAll();
+
+#if DEBUG
+                        // Console.WriteLine(boxItem.ItemName);
+#endif
+
+                        switch (currentMode)
+                        {
+                            case ThemeMode.GtkTheme:
+                                bashHandler.ChangeTheme(boxItem.ItemName);
+                                break;
+
+                            case ThemeMode.IconTheme:
+                                bashHandler.ChangeIcon(boxItem.ItemName);
+                                break;
+
+                            case ThemeMode.ShellTheme:
+                                bashHandler.ChangeShell(boxItem.ItemName);
+                                break;
+
+                            case ThemeMode.CursorTheme:
+                                bashHandler.ChangeCursor(boxItem.ItemName);
+                                break;
+                            
+                        }
+                        
+                    };
+                        
                     eventBox.ButtonPressEvent += (o, args) =>
                     {
                         Box.UnselectAll();

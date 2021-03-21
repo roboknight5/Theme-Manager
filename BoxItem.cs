@@ -17,6 +17,7 @@ namespace ThemeManager
             Label label = new Label(itemName.Replace("_", "__"));
             RadioButton = new RadioButton(radioButtonGroup, "");
 
+            
             PackStart(label, false, false, 5);
             PackEnd(RadioButton, false, false, 5);
         }
