@@ -58,27 +58,6 @@ namespace Gtk_Theme_Manager
                 BashHandler.GetCursorTheme(),
                 BashHandler.GetShellTheme());
             
-           
-            /* Old Check will removed later
-              Console.WriteLine(LayoutItems.Count);
-            if (LayoutItems.Count==0)
-            {
-                LayoutItems.Add(layoutItem);
-                using (StreamWriter streamWriter = new StreamWriter(PathToSettings + $"Layout_0.txt"))
-                {
-                    streamWriter.WriteLine(layoutItem.Theme);
-                    streamWriter.WriteLine(layoutItem.IconTheme);
-                    streamWriter.WriteLine(layoutItem.CursorTheme);
-                    streamWriter.WriteLine(layoutItem.ShellTheme);
-                        
-                }
-                
-                Console.WriteLine(layoutItem);
-                return layoutItem;
-            
-            }
-            */
-            
             int index = Directory.GetFiles(PathToSettings).Length;
             int count=0;
             foreach (var i in LayoutItems)
