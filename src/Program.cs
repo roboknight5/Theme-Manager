@@ -1,52 +1,63 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Gdk;
-using GLib;
-using Gtk;
-using Gtk_Theme_Manager;
-using Process = System.Diagnostics.Process;
-using Settings = Gtk.Settings;
-using Stack = Gtk.Stack;
-using Switch = Gtk.Switch;
+﻿using Stack = Gtk.Stack;
 using Window = Gtk.Window;
+using Settings = Gtk.Settings;
+
+using Gtk;
+using Gdk;
+using System;
+
+using ThemeManager.Layout;
 
 namespace ThemeManager
 {
     public class Program : Window
     {
-        Program(string title) : base(title)
+        [System.Runtime.Versioning.SupportedOSPlatform("linux")]
+        private static void Main(string[] args)
         {
-            AppSettings settings= new AppSettings();
-            SettingsData settingsData = settings.GetSettings();
+            Application.Init();
+            new Program("Theme Manager");
+            Application.Run();
+        }
+        
+        // You should probably refactor this into something smaller
+        private Program(string title) : base(title)
+        {
+            var settings= new AppSettings();
+            var settingsData = settings.GetSettings();
             Settings.Default.ApplicationPreferDarkTheme = settingsData.DarkModeEnabled;
             
             SetDefaultSize(500, 500);
             
-            BashHandler bashHandler = BashHandler.Instance;
+            var bashHandler = BashHandler.Instance;
 
             try { SetIconFromFile("/usr/share/icons/Gtk-Theme-Manager-icon.png"); }
             catch (Exception e) { Console.WriteLine(e); }
 
             DeleteEvent += delegate { Gtk.Application.Quit(); };
 
-            HeaderBar headerBar = new HeaderBar();
-            headerBar.Title = title;
-            headerBar.ShowCloseButton = true;
-            headerBar.Visible = true;
+            var headerBar = new HeaderBar
+            {
+                Title = title,
+                ShowCloseButton = true,
+                Visible = true
+            };
 
-            Button menuButton = new Button();
-            menuButton.Image = Image.NewFromIconName("view-refresh-symbolic", IconSize.LargeToolbar);
-            menuButton.Visible = true;
+            Button menuButton = new Button
+            {
+                Image = Image.NewFromIconName("view-refresh-symbolic", IconSize.LargeToolbar),
+                Visible = true  
+            };
 
-            SettingPopOverMenu settingPopOverMenu= new SettingPopOverMenu();
+            var settingPopOverMenu= new SettingPopOverMenu();
 
-            MenuButton themeButton = new MenuButton();
-            themeButton.Image = Image.NewFromIconName("open-menu-symbolic", IconSize.LargeToolbar);
-            themeButton.Visible = true;
-            themeButton.Popover = settingPopOverMenu;
+            var themeButton = new MenuButton
+            {
+                Image = Image.NewFromIconName("open-menu-symbolic", IconSize.LargeToolbar),
+                Visible = true,
+                Popover = settingPopOverMenu
+
+            };
 
             Pixbuf pixbuf=null;
             try
@@ -58,31 +69,33 @@ namespace ThemeManager
             {
                 Console.WriteLine(e);
             }
-            
-            Image image=new Image();
-            image.Pixbuf = pixbuf;
-            image.Visible = true;
-    
+
+            var image = new Image
+            {
+                Pixbuf = pixbuf,
+                Visible = true
+            };
+
             headerBar.PackStart(image);
             headerBar.PackEnd(menuButton);
             headerBar.PackEnd(themeButton);
             Titlebar = headerBar;
 
-            StackSidebar stackSidebar = new StackSidebar();
-            HBox hBox = new HBox();
+            var stackSidebar = new StackSidebar();
+            var hBox = new HBox();
             hBox.PackStart(stackSidebar, false, true, 0);
             stackSidebar.WidthRequest = 120;
 
-            Stack stack = new Stack();
+            var stack = new Stack();
             stackSidebar.Stack = stack;
             stack.TransitionType = StackTransitionType.SlideUpDown;
             stack.TransitionDuration = (1000);
 
-            ThemeUI GtkTheme = new ThemeUI(ThemeMode.GtkTheme);
-            ThemeUI IconTheme = new ThemeUI(ThemeMode.IconTheme);
-            ThemeUI ShellTheme = new ThemeUI(ThemeMode.ShellTheme);
-            ThemeUI CursorTheme = new ThemeUI(ThemeMode.CursorTheme);
-            LayoutUI layoutUi = new LayoutUI();
+            var GtkTheme = new ThemeUI(ThemeMode.GtkTheme);
+            var IconTheme = new ThemeUI(ThemeMode.IconTheme);
+            var ShellTheme = new ThemeUI(ThemeMode.ShellTheme);
+            var CursorTheme = new ThemeUI(ThemeMode.CursorTheme);
+            var layoutUi = new LayoutUI();
             stack.RedrawOnAllocate = true;
 
             menuButton.Clicked += (sender, args) =>
@@ -108,14 +121,6 @@ namespace ThemeManager
             hBox.ShowAll();
             Add(hBox);
             Show();
-        }
-
-        [System.Runtime.Versioning.SupportedOSPlatform("linux")]
-        static void Main(string[] args)
-        {
-            Gtk.Application.Init();
-            new Program("Theme Manager");
-            Gtk.Application.Run();
         }
     }
 }

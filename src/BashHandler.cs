@@ -8,37 +8,42 @@ namespace ThemeManager
 {
     public class BashHandler
     {
-        private static BashHandler instance = null;
-        private String IconOutput { get; set; }
-        private String ShellOutput { get; set; }
-        private String ThemeOutput { get; set; }
-
-        private String CursorOutput { get; set; }
-        public List<String> IconList { get; set; }
-        public List<String> ShellList { get; set; }
-        public List<String> ThemeList { get; set; }
-        public List<String> CursorList { get; set; }
-
-        public bool UserThemeExtensionExists { get; set; }
+        private static readonly BashHandler _instance = null;
+        private bool _userThemeExtensionExists;
 
         private BashHandler()
         {
-            Initalize();
-#if DEBUG
+            Initialize();
+            #if DEBUG
             // CursorList.ForEach(s => Console.WriteLine(s)); // Would run
-#endif
+            #endif
         }
+        
+        private string IconOutput { get; set; }
+        private string ShellOutput { get; set; }
+        private string ThemeOutput { get; set; }
 
+        private string CursorOutput { get; set; }
+        
+        public List<string> IconList { get; private set; }
+        public List<string> ShellList { get; private set; }
+        public List<string> ThemeList { get; private set; }
+        public List<string> CursorList { get; private set; }
+        
         public static BashHandler Instance
         {
             get
             {
-                if (instance == null) return new BashHandler();
-                return instance;
+                if (_instance == null)
+                {
+                    return new BashHandler();
+                }
+                
+                return _instance;
             }
         }
 
-        private void Initalize()
+        private void Initialize()
         {
             ThemeOutput = Bash(@"
                         for f in ~/.themes/*
@@ -119,34 +124,34 @@ namespace ThemeManager
                                         fi
                                     done");
 
-            Box box = new Box(Orientation.Vertical, 6);
+            var box = new Box(Orientation.Vertical, 6);
 
             ThemeList = ThemeOutput.Split("\n").ToList();
-            ThemeList.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            ThemeList.RemoveAll(string.IsNullOrWhiteSpace);
             // ThemeList.ForEach(s=>Console.Write(s+"\n"));
             ThemeList = ThemeList.Distinct().ToList();
             ThemeList.Sort();
 
             IconList = IconOutput.Split("\n").ToList();
-            IconList.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            IconList.RemoveAll(string.IsNullOrWhiteSpace);
             // IconList.ForEach(s=>Console.Write(s+"\n"));
             IconList = IconList.Distinct().ToList();
             IconList.Sort();
 
             ShellList = ShellOutput.Split("\n").ToList();
-            ShellList.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            ShellList.RemoveAll(string.IsNullOrWhiteSpace);
             // iconList.ForEach(s=>Console.Write(s+"\n"));
             ShellList = ShellList.Distinct().ToList();
             ShellList.Sort();
 
             CursorList = CursorOutput.Split("\n").ToList();
-            CursorList.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            CursorList.RemoveAll(string.IsNullOrWhiteSpace);
             CursorList = CursorList.Distinct().ToList();
             CursorList.Sort();
-            UserThemeExtensionExists = CheckUserThemeExtExists();
+            _userThemeExtensionExists = CheckUserThemeExtExists();
         }
 
-        public void Reload() => Initalize();
+        public void Reload() => Initialize();
 
         public bool CheckUserThemeExtExists() =>
             Bash("gnome-extensions list --enabled | grep user-theme@gnome-shell-extensions.gcampax.github.com")
@@ -179,7 +184,7 @@ namespace ThemeManager
                 .Replace("\'", "")
                 .Trim();
 
-        public String GetCursorTheme()
+        public string GetCursorTheme()
             => Bash("gsettings get  org.gnome.desktop.interface cursor-theme")
                 .Replace("\'", "")
                 .Trim();
@@ -188,7 +193,7 @@ namespace ThemeManager
         {
             // NOTE: Is it necessary to create a new variable
             // just to use it once instead of overriding it?
-            // Might wnat to change it to:
+            // Might want to change it to:
             // cmd = cmd.Replace("\"", "\\\"");
             // Do not forget to change arguments from
             // `escapedArgs` to `cmd` if you plan to do so.
@@ -207,7 +212,7 @@ namespace ThemeManager
             };
             process.Start();
 
-            string result = process.StandardOutput.ReadToEnd();
+            var result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
             return result;
         }
