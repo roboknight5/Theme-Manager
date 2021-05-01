@@ -6,21 +6,24 @@ namespace ThemeManager
 {
     public class ThemeUI : ScrolledWindow
     {
-        public ThemeMode CurrentMode;
-        private List<String> currentArray;
-        private String currentTheme;
+        private ThemeMode _currentMode;
+        private List<string> _currentArray;
+        private string _currentTheme;
 
         public ThemeUI(ThemeMode currentMode)
-            => Initalize(currentMode);
+            => Initialize(currentMode);
 
-        public void Reload() => Initalize(CurrentMode);
+        public void Reload() => Initialize(_currentMode);
 
-        private void Initalize(ThemeMode currentMode)
+        private void Initialize(ThemeMode currentMode)
         {
             foreach (var widget in Children)
+            {
                 Remove(widget);
-            this.CurrentMode = currentMode;
-            BashHandler bashHandler = BashHandler.Instance;
+            }
+            
+            _currentMode = currentMode;
+            var bashHandler = BashHandler.Instance;
 
 #if DEBUG
             Console.WriteLine(bashHandler.UserThemeExtensionExists);
@@ -28,11 +31,9 @@ namespace ThemeManager
 
             if (currentMode == ThemeMode.ShellTheme && !bashHandler.CheckUserThemeExtExists())
             {
-                VBox vBox = new VBox
+                var vBox = new VBox
                 {
-                    new Label("Please Install The User Themes Extension"
-                        + Environment.NewLine
-                        + " to Use This Feature On Gnome")
+                    new Label($"Please Install The User Themes Extension{Environment.NewLine} to Use This Feature On Gnome")
                 };
                 Add(vBox);
                 vBox.ShowAll();
@@ -43,41 +44,41 @@ namespace ThemeManager
                 switch (currentMode)
                 {
                     case ThemeMode.GtkTheme:
-                        currentArray = bashHandler.ThemeList;
-                        currentTheme = bashHandler.GetTheme();
+                        _currentArray = bashHandler.ThemeList;
+                        _currentTheme = bashHandler.GetTheme();
                         break;
 
                     case ThemeMode.IconTheme:
-                        currentArray = bashHandler.IconList;
-                        currentTheme = bashHandler.GetIconTheme();
+                        _currentArray = bashHandler.IconList;
+                        _currentTheme = bashHandler.GetIconTheme();
                         break;
 
                     case ThemeMode.ShellTheme:
-                        currentArray = bashHandler.ShellList;
-                        currentTheme = bashHandler.GetShellTheme();
+                        _currentArray = bashHandler.ShellList;
+                        _currentTheme = bashHandler.GetShellTheme();
                         break;
 
                     case ThemeMode.CursorTheme:
-                        currentArray = bashHandler.CursorList;
-                        currentTheme = bashHandler.GetCursorTheme();
+                        _currentArray = bashHandler.CursorList;
+                        _currentTheme = bashHandler.GetCursorTheme();
                         break;
                 }
 
-                ListBox box = new ListBox();
+                var box = new ListBox();
 
-                RadioButton radioButton = new RadioButton("");
+                var radioButton = new RadioButton("");
                 box.SelectionMode = SelectionMode.None;
 
-                foreach (var theme in currentArray)
+                foreach (var theme in _currentArray)
                 {
-                    ListBoxRow row = new ListBoxRow();
-                    EventBox eventBox = new EventBox();
-                    BoxItem boxItem = new BoxItem(theme, radioButton);
+                    var row = new ListBoxRow();
+                    var eventBox = new EventBox();
+                    var boxItem = new BoxItem(theme, radioButton);
 
                     row.Child = boxItem;
                     eventBox.Add(row);
 
-                    if (currentTheme == boxItem.ItemName)
+                    if (_currentTheme == boxItem.ItemName)
                     {
                         box.UnselectAll();
                         box.SelectionMode = SelectionMode.Single;
