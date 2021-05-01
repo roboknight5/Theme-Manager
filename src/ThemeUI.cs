@@ -1,44 +1,47 @@
 using System;
 using System.Collections.Generic;
 using Gtk;
-using Gtk_Theme_Manager;
+using ThemeManager;
 
 namespace ThemeManager
 {
 
     public class ThemeUI : ScrolledWindow
     {
-        public ThemeMode CurrentMode;
-        private List<String> currentArray;
-        private String currentTheme;
-        static private ListBox Box;
-        static private List<BoxItem> BoxItems=new List<BoxItem>();
+        private ThemeMode _currentMode;
+        private List<string> _currentArray;
+        private string _currentTheme;
+        
+        private static ListBox _box;
+        private static readonly List<BoxItem> _boxItems = new();
 
-        public ThemeUI(ThemeMode currentMode)
-            => Initalize(currentMode);
+        public ThemeUI(ThemeMode currentMode) => Initialize(currentMode);
 
-        public void Reload() => Initalize(CurrentMode);
+        public void Reload() => Initialize(_currentMode);
 
-        private void Initalize(ThemeMode currentMode)
+        private void Initialize(ThemeMode currentMode)
         {
-           
             foreach (var widget in Children)
+            {
                 Remove(widget);
-            this.CurrentMode = currentMode;
-            BashHandler bashHandler = BashHandler.Instance;
+            }
+            
+            _currentMode = currentMode;
+            var bashHandler = BashHandler.Instance;
 
-#if DEBUG
+            #if DEBUG
             // Console.WriteLine(bashHandler.UserThemeExtensionExists);
-#endif
+            #endif
 
             if (currentMode == ThemeMode.ShellTheme && !bashHandler.CheckUserThemeExtExists())
             {
-                VBox vBox = new VBox
+                var vBox = new VBox
                 {
                     new Label("Please Install The User Themes Extension"
                         + Environment.NewLine
                         + " to Use This Feature On Gnome")
                 };
+                
                 Add(vBox);
                 vBox.ShowAll();
                 Show();
@@ -48,62 +51,57 @@ namespace ThemeManager
                 switch (currentMode)
                 {
                     case ThemeMode.GtkTheme:
-                        currentArray = bashHandler.ThemeList;
-                        currentTheme = bashHandler.GetTheme();
+                        _currentArray = bashHandler.ThemeList;
+                        _currentTheme = bashHandler.GetTheme();
                         break;
 
                     case ThemeMode.IconTheme:
-                        currentArray = bashHandler.IconList;
-                        currentTheme = bashHandler.GetIconTheme();
+                        _currentArray = bashHandler.IconList;
+                        _currentTheme = bashHandler.GetIconTheme();
                         break;
 
                     case ThemeMode.ShellTheme:
-                        currentArray = bashHandler.ShellList;
-                        currentTheme = bashHandler.GetShellTheme();
+                        _currentArray = bashHandler.ShellList;
+                        _currentTheme = bashHandler.GetShellTheme();
                         break;
 
                     case ThemeMode.CursorTheme:
-                        currentArray = bashHandler.CursorList;
-                        currentTheme = bashHandler.GetCursorTheme();
+                        _currentArray = bashHandler.CursorList;
+                        _currentTheme = bashHandler.GetCursorTheme();
                         break;
                 }
-
-                 
-
-                RadioButton radioButton = new RadioButton("");
-                Box = new ListBox();
-                Box.SelectionMode = SelectionMode.None;
-                // Box.SelectionMode = SelectionMode.None;
-
-                foreach (var theme in currentArray)
+                
+                var radioButton = new RadioButton("");
+                _box = new ListBox
                 {
-                    ListBoxRow row = new ListBoxRow();
-                    EventBox eventBox = new EventBox();
-                    BoxItem boxItem = new BoxItem(theme, radioButton,currentMode);
-                    BoxItems.Add(boxItem);
+                    SelectionMode = SelectionMode.None,
+                };
+
+                foreach (var theme in _currentArray)
+                {
+                    var row = new ListBoxRow();
+                    var eventBox = new EventBox();
+                    var boxItem = new BoxItem(theme, radioButton,currentMode);
+                    _boxItems.Add(boxItem);
 
                     row.Child = boxItem;
                     eventBox.Add(row);
                     
-
-                    if (currentTheme == boxItem.ItemName)
+                    if (_currentTheme == boxItem.ItemName)
                     {
-                        Box.UnselectAll();
-                        // Box.SelectionMode = SelectionMode.Single;
+                        _box.UnselectAll();
                         boxItem.RadioButton.Active = true;
-#if DEBUG
+                        #if DEBUG
                         // Console.WriteLine(boxItem.ItemName);
-#endif
+                        #endif
                     }
 
-                    boxItem.RadioButton.Clicked += (sender, args) =>
+                    boxItem.RadioButton.Clicked += (_, _) =>
                     {
-                        Box.UnselectAll();
-
-#if DEBUG
+                        _box.UnselectAll();
+                        #if DEBUG
                         // Console.WriteLine(boxItem.ItemName);
-#endif
-
+                        #endif
                         switch (currentMode)
                         {
                             case ThemeMode.GtkTheme:
@@ -121,19 +119,16 @@ namespace ThemeManager
                             case ThemeMode.CursorTheme:
                                 bashHandler.ChangeCursor(boxItem.ItemName);
                                 break;
-                            
                         }
-                        
                     };
                         
-                    eventBox.ButtonPressEvent += (o, args) =>
+                    eventBox.ButtonPressEvent += (_, _) =>
                     {
-                        Box.UnselectAll();
-
-#if DEBUG
+                        _box.UnselectAll();
+                        #if DEBUG
                         // Console.WriteLine(boxItem.ItemName);
-#endif
-
+                        #endif
+                        
                         boxItem.RadioButton.Active = true;
                         switch (currentMode)
                         {
@@ -155,30 +150,25 @@ namespace ThemeManager
                             
                         }
                     };
-                    Box.Add(eventBox);
+                    _box.Add(eventBox);
                 }
-                Box.ShowAll();
-                Add(Box);
+                _box.ShowAll();
+                Add(_box);
                 Show();
             }
         }
 
         public static void ResetSelection(string name,ThemeMode type)
         {
-            Box.UnselectAll();
-            foreach (var boxItem in BoxItems)
+            _box.UnselectAll();
+            foreach (var boxItem in _boxItems)
             {
-                if (boxItem.ItemName==name&&boxItem.ItemType==type)
+                if (boxItem.ItemName == name && boxItem.ItemType == type)
                 {
                     boxItem.RadioButton.Active = true;
                     break;
-
                 }
-                
             }
-            
-            
-
         }
     }
 }

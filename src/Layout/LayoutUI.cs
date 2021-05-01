@@ -1,28 +1,23 @@
-using System.Threading;
 using Gtk;
-using ThemeManager;
 
-namespace Gtk_Theme_Manager
+namespace ThemeManager.Layout
 {
     public class LayoutUI : ScrolledWindow
     {
         public LayoutUI()
         {
-            Initalize();
-
+            Initialize();
         }
 
-        public void Reload() => Initalize();
+        public void Reload() => Initialize();
         
-        
-
-        private void  Initalize()
+        private void Initialize()
         {
             foreach (var widget in Children)
             {
                 Remove(widget);
-                
             }
+            
             // Stack stack = new Stack();
             // ViewLayoutUI viewLayoutUi = new ViewLayoutUI();
             // AddLayoutUI addLayoutUi = new AddLayoutUI();
@@ -33,60 +28,61 @@ namespace Gtk_Theme_Manager
             // stackSwitcher.Stack = stack;
             // PackStart(stackSwitcher,false,false,0);
             // PackStart(stack,false,false,0);
-            LayoutHandler layoutHandler = new LayoutHandler();
-            
-            ListBox box = new ListBox();
-            box.SelectionMode = SelectionMode.None;
+            var layoutHandler = new LayoutHandler();
 
+            var box = new ListBox
+            {
+                SelectionMode = SelectionMode.None,
+            };
+
+            var button = new Button
+            {
+                Label = "Add Layout"
+            };
             
-            Button button = new Button();
-            button.Label = "Add Layout";
-            
-            VBox vBox = new VBox();
+            var vBox = new VBox();
             vBox.PackStart(button,false,false,5);
 
             foreach (var layoutItem in layoutHandler.LayoutItems)
             {
-                ListBoxRow row = new ListBoxRow();
-                EventBox eventBox = new EventBox();
+                var row = new ListBoxRow();
+                var eventBox = new EventBox();
+                
                 row.Child = layoutItem;
                 eventBox.Add(row);
                 eventBox.ShowAll();
                 layoutItem.ShowAll();
                 box.Add(eventBox);
                 
-                layoutItem.DeleteButton.Clicked += (o, eventArgs) =>
+                layoutItem.DeleteButton.Clicked += (_, _) =>
                 {
                     eventBox.Remove(row);
                     box.Remove(eventBox);
                     layoutHandler.DeleteLayout(layoutItem);
-                        
                 }; 
 
 
-                eventBox.ButtonPressEvent += (o, eventArgs) =>
+                eventBox.ButtonPressEvent += (_, _) =>
                 {
                     layoutHandler.ApplyLayout(layoutItem);
                     box.UnselectAll();
                 };
-                
-                
             }
 
-            button.Clicked += (sender, args) =>
+            button.Clicked += (_, _) =>
             {
                 var layoutItem = layoutHandler.AddLayoutItem();
                 if (layoutItem != null)
                 {
-                    ListBoxRow row = new ListBoxRow();
-                    EventBox eventBox = new EventBox();
+                    var row = new ListBoxRow();
+                    var eventBox = new EventBox();
                     row.Child = layoutItem;
                     eventBox.Add(row);
                     eventBox.ShowAll();
                     layoutItem.ShowAll();
                     box.Add(eventBox);
 
-                    layoutItem.DeleteButton.Clicked += (o, eventArgs) =>
+                    layoutItem.DeleteButton.Clicked += (_, _) =>
                     {
                         eventBox.Remove(row);
                         box.Remove(eventBox);
@@ -94,7 +90,7 @@ namespace Gtk_Theme_Manager
                         
                     }; 
 
-                    eventBox.ButtonPressEvent += (o, eventArgs) =>
+                    eventBox.ButtonPressEvent += (_, _) =>
                     {
                         layoutHandler.ApplyLayout(layoutItem);
                         box.UnselectAll();
@@ -108,8 +104,6 @@ namespace Gtk_Theme_Manager
             vBox.Add(box);
             Add(vBox);
             ShowAll();
-
-        }
-            
         }
     }
+}
