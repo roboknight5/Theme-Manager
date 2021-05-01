@@ -23,14 +23,17 @@ namespace Gtk_Theme_Manager
           {
               foreach (var file in Directory.EnumerateFiles(PathToSettings))
               {
-                  string contents = File.ReadAllText(file);
-                  string []text = contents.Split();
-                  LayoutItem layoutItem = new LayoutItem(
-                      text[0]
-                      ,text[1]
-                      ,text[2]
-                      ,text[3]);
-                  LayoutItems.Add(layoutItem);
+                  if (file != PathToSettings+"settings.json")
+                  {
+                      string contents = File.ReadAllText(file);
+                      string[] text = contents.Split();
+                      LayoutItem layoutItem = new LayoutItem(
+                          text[0]
+                          , text[1]
+                          , text[2]
+                          , text[3]);
+                      LayoutItems.Add(layoutItem);
+                  }
 
               }
               

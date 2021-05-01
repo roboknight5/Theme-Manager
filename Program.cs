@@ -8,17 +8,23 @@ using GLib;
 using Gtk;
 using Gtk_Theme_Manager;
 using Process = System.Diagnostics.Process;
+using Settings = Gtk.Settings;
 using Stack = Gtk.Stack;
 using Switch = Gtk.Switch;
 using Window = Gtk.Window;
 
 namespace ThemeManager
 {
-    class Program : Window
+    public class Program : Window
     {
-        public Program(string title) : base(title)
+        Program(string title) : base(title)
         {
+            AppSettings settings= new AppSettings();
+            SettingsData settingsData = settings.GetSettings();
+            Settings.Default.ApplicationPreferDarkTheme = settingsData.DarkModeEnabled;
+            
             SetDefaultSize(500, 500);
+            
             BashHandler bashHandler = BashHandler.Instance;
 
             try { SetIconFromFile("/usr/share/icons/Gtk-Theme-Manager-icon.png"); }
@@ -34,7 +40,14 @@ namespace ThemeManager
             Button menuButton = new Button();
             menuButton.Image = Image.NewFromIconName("view-refresh-symbolic", IconSize.LargeToolbar);
             menuButton.Visible = true;
-            
+
+            SettingPopOverMenu settingPopOverMenu= new SettingPopOverMenu();
+
+            MenuButton themeButton = new MenuButton();
+            themeButton.Image = Image.NewFromIconName("open-menu-symbolic", IconSize.LargeToolbar);
+            themeButton.Visible = true;
+            themeButton.Popover = settingPopOverMenu;
+
             Pixbuf pixbuf=null;
             try
             {
@@ -52,6 +65,7 @@ namespace ThemeManager
     
             headerBar.PackStart(image);
             headerBar.PackEnd(menuButton);
+            headerBar.PackEnd(themeButton);
             Titlebar = headerBar;
 
             StackSidebar stackSidebar = new StackSidebar();
@@ -96,6 +110,7 @@ namespace ThemeManager
             Show();
         }
 
+        [System.Runtime.Versioning.SupportedOSPlatform("linux")]
         static void Main(string[] args)
         {
             Gtk.Application.Init();
